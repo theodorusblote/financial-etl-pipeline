@@ -1,11 +1,16 @@
 # Import necessary libraries
 import yfinance as yf
+from dotenv import load_dotenv
+import os
+from sqlalchemy import create_engine
 
-# Extract stock data
+# Extract
+# Set parameters
 ticker = 'TSLA'
 period = '5y'
 interval = '1d'
 
+# Download stock data
 df = yf.download(ticker, period=period, interval=interval)
 
 # Transform
@@ -47,3 +52,19 @@ df['Lag Daily Return'] = df['Daily Return'].shift(1)
 
 # Drop NaN values resulting from calculations
 df.dropna(inplace=True)
+
+# Load
+# Load environment variables
+load_dotenv()
+
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+DB_NAME = os.getenv('DB_NAME')
+
+# Create SQL engine
+engine = create_engine(f'postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
+
+# Load DataFrame into SQL database
+df.to_sql('stock_data', con=engine, if_exists='replace', index=False)
