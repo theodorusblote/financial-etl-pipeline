@@ -19,7 +19,7 @@ This project implements an automated ETL (Extract, Transform, Load) pipeline for
   - RSI
   - Lagged features for Open Price, Volume, and Daily Return
 - **Data loading:** Stores transformed data into a PostgreSQL database for further analysis
-- **Automation:** Configurable to run automatically at a specified time daily using cron jobs.
+- **Automation:** Configurable to run automatically at a specified time daily using cron jobs
 
 ## Installation and setup
 
